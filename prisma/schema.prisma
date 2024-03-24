@@ -6,10 +6,20 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/client"
 }
 
 datasource db {
   provider = "postgresql"
   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model users {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  password String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 }
