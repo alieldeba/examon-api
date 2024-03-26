@@ -29,20 +29,18 @@
 ## Installation
 
 ```bash
-$ pnpm install
+$ git clone https://github.com/alieldeba/examon-api.git
+$ cd examon-api
+$ docker compose up
 ```
 
-## Running the app
+Due to a bug in postgres container the containers is marked as "started" before it is ready to use 
+this leads to docker thinks that the database is fully ready to use so starts to run the app container
+with this issue when docker tries to run prisma migrations it throws an error cause the database isn't actually running
+so after the docker is fully running run this command to run prisma migrations:
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+$ pnpm prisma migrate deploy
 ```
 
 ## Test
