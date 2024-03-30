@@ -29,4 +29,32 @@ export class UsersService {
       password: hashedPassword,
     };
   }
+
+  async setResetToken(email: string, token: string | null) {
+    await prisma.users.update({
+      where: {
+        email,
+      },
+      data: {
+        forgetPasswordToken: token,
+        forgetPasswordExpireDate: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      },
+    });
+  }
+
+  async restorePassword(email: string, newPassword: string) {
+    const salt = await bcrypt.genSalt();
+
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    await prisma.users.update({
+      where: {
+        email,
+      },
+      data: {
+        forgetPasswordToken: null,
+        forgetPasswordExpireDate: null,
+        password: hashedPassword,
+      },
+    });
+  }
 }

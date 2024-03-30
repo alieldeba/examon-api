@@ -3,6 +3,8 @@ export interface User {
   name: string;
   email: string;
   password: string;
+  forgetPasswordToken: string;
+  forgetPasswordExpireDate: Date;
   createdAt: Date;
   updatedAt: Date;
 }
